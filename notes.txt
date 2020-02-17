@@ -1,0 +1,11 @@
+#on any deb based linux machine you can install postgres with the following command
+sudo apt install postgresql 
+
+#you can also run the official postgres docker image https://hub.docker.com/_/postgres
+docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+
+#to access postgres. it will ask for your postgres user password. you'll likely need to exec into the docker container if you go the docker route. 
+psql -U postgres -h localhost
+
+#creating the table for the example CSV 
+CREATE TABLE capstone(id integer PRIMARY KEY, first_name text, last_name text, company_name text, address text, city text, county text, state text, zip int, phone1 text, phone2 text, email text, web text);
