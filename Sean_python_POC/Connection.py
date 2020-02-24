@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import sys
 import psycopg2
-from config import pgSQLconfig
+from dbConfig import pgSqlConfig
 
 
 
@@ -10,7 +10,7 @@ def pgSQLconnect():
     conn = None
     try:
         # read connection parameters
-        params = pgSQLconfig()
+        params = pgSqlConfig()
         # connect to the PostgreSQL server
         print('Connecting to the PostgreSQL database...')
         conn = psycopg2.connect(**params)
@@ -21,7 +21,7 @@ def pgSQLconnect():
         print(error)
 
 
-def pgSQLdisconnect(cur, conn):
+def pgSqlDisconnect(cur, conn):
     try:
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
