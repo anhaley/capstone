@@ -46,6 +46,7 @@ dump_tables()
 
 # Write the dataframe to the DB
 cmd = "INSERT INTO {}(id, firstname, lastname) VALUES({}, {}, {}) ON CONFLICT DO NOTHING"
+# unclear what we want to do on collision; depends on data we're inserting
 
 # potential missing functionality is ability to create a table from a spreadsheet with a non-pre-existing schema
 for i in np.ndenumerate(df.values).iter.base:
@@ -65,7 +66,17 @@ for item in metadata:
 
 cmd = "INSERT INTO {}(filename, creator, size, last_modified_by, created, modified, title) " \
       "VALUES({},{},{},{},{},{},{}) ON CONFLICT DO NOTHING"
-# TODO: change DO NOTHING to an update by either adding a COPY field or erasing the previous record
+# three options for collisions:
+# 1. do nothing (discard new row; probably want to return an error to the user in this case)
+# 2. update existing record with new metadata
+# ON CONFLICT (filename)
+#       DO UPDATE
+#       SET (size, last_modified_by, modified) = (EXCLUDED.size, EXCLUDED.last_modified_by, EXCLUDED.modified)
+# 3. add entirely new record
+# would need to return status of insertion, then insert a new row. Would need an incrementing column, like 'version'
+
+# unfortunately, it looks like 'creator' and 'created' are both fabricated by openpyxl, so we may need to find
+# a different way to capture that data if we want to keep them
 
 pgSqlCur.execute(cmd.format(metadata_db, fmt(filename), metadata['creator'], metadata['size'], metadata['lastModifiedBy'],
                             metadata['created'], metadata['modified'], metadata['title']))
