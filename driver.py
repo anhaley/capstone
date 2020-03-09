@@ -5,16 +5,26 @@ This is driver file that will contain program functions
 import pandas as pd
 import numpy as np
 import Connection as c
-import os
+import os,sys,time
 from openpyxl import load_workbook
 
 
 filename = 'files/Lists.xlsx'
 test_table = 'test'
 metadata_table = 'metadata'
+is_connect = 0
+wait_time = 0
 
 # create the postgresql cursor and connection
-pgSqlCur, pgSqlConn = c.pgSQLconnect()
+
+while not is_connect:
+    try:
+        pgSqlCur, pgSqlConn = c.pgSQLconnect()
+        is_connect = 1
+    except:
+        time.sleep(1)
+        wait_time += 1
+        sys.stdout.write(f'\rConnecting to DB ... {wait_time}')
 
 
 def fmt(s):
