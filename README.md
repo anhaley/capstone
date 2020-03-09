@@ -1,6 +1,6 @@
 # Capstone Project
  
-##Team members:
+## Team members:
 - Andrew Haley
 - Lawrence Gunnell
 - Connor Kazmierczak
