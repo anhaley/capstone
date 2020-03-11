@@ -10,7 +10,7 @@ select * from test;
 select * from metadata;
 
 -- insert rows
-INSERT INTO test(id, firstname, lastname) VALUES(1, 'a', 'b') ON CONFLICT DO NOTHING;
+INSERT INTO test(id, firstname, lastname, city) VALUES(1, 'a', 'b', 'c') ON CONFLICT DO NOTHING;
 
 
 -- clear table

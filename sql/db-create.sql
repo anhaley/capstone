@@ -7,7 +7,8 @@ It will contain SQL command to set up required DBs and tables
 CREATE TABLE IF NOT EXISTS test  (
     id 			INTEGER  PRIMARY KEY,
     firstname 	TEXT NOT NULL,
-    lastname 	TEXT NOT NULL
+    lastname 	TEXT NOT NULL,
+    city        TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS metadata (

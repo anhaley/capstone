@@ -99,13 +99,13 @@ def read_execel_file(filename):
 def write_info_data(df):
     ''' Write data from execle to the information table
     '''
-    cmd = "INSERT INTO {}(id, firstname, lastname) VALUES({}, {}, {}) ON CONFLICT DO NOTHING"
+    cmd = "INSERT INTO {}(id, firstname, lastname, city) VALUES({}, {}, {}, {}) ON CONFLICT DO NOTHING"
     # unclear what we want to do on collision; depends on data we're inserting
 
     # potential missing functionality is ability to create a table from a spreadsheet with a non-pre-existing schema
     for i in np.ndenumerate(df.values).iter.base:
-        id_, firstname, lastname = i
-        cf = cmd.format(test_table, id_, fmt(firstname), fmt(lastname))
+        id_, firstname, lastname, city = i
+        cf = cmd.format(test_table, id_, fmt(firstname), fmt(lastname), fmt(city))
         print(cf)
         pgSqlCur.execute(cf)
 
