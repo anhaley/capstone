@@ -31,5 +31,3 @@ services:
             - db
         ports:
             - "80:80"
-
-

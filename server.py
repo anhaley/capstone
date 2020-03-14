@@ -4,10 +4,9 @@ This is a http server, as the program API endpoint
 '''
 from flask import Flask, render_template, request, Response, jsonify
 import driver           # the dirver.py file
-
+import os
 
 app = Flask(__name__)
-
 
 # /list?table=???
 @app.route("/list", methods=["GET"])
@@ -34,6 +33,22 @@ def load_data():
     response = jsonify(response_obj)
     return response
 
+@app.route("/file", methods=["GET", "POST"])
+def upload_file():
+    response = ''
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            return response
+        file = request.files['file']
+        if file.filename == '':
+            return response
+        if file:
+            driver.populate_file(file)
+            response_obj = {'status': 'OK'}
+            response = jsonify(response_obj)
+            return response
+        else:
+            return response
 
 
 @app.route('/')

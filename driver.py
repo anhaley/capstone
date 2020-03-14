@@ -151,7 +151,7 @@ def test_driver():
 
 
     print('\nInsert data -------------------------------------------------')
-    populate_file(filename)
+    #populate_file(filename)
 
     # three options for collisions:
     # 1. do nothing (discard new row; probably want to return an error to the user in this case)
