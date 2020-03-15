@@ -1,0 +1,7 @@
+xlrd
+pandas
+openpyxl
+psycopg2
+flask
+jsonify
+response

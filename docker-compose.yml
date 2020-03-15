@@ -1,0 +1,33 @@
+# set up all the docker compose things or container 
+
+# version of docker compose to use
+version: "3.7"
+
+# All container to be used
+services:
+    
+    # a DB container
+    db:
+        image: postgres:9.5
+        environment:
+            POSTGRES_USER: cc
+            POSTGRES_PASSWORD: pp
+            POSTGRES_DB: capstone-db
+        # volume to persistent data
+        volumes:
+            # <local/path/to/store/data>:<path/inside/container>
+            - ./pgdata:/var/lib/postgresql/data
+            - ./sql/db-create.sql:/docker-entrypoint-initdb.d/init.sql
+        
+        ports:
+            # <local/port>:<container/exposing/port>
+            - "5432:5432"
+    
+    # a web server
+    web:
+        # the pre-built flask server
+        image: flask-server:v1
+        depends_on:
+            - db
+        ports:
+            - "80:80"
