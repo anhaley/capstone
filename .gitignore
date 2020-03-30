@@ -2,9 +2,7 @@
 # folders
 __pycache__
 bin
-
-
+.idea
 
 # files
-.idea/*
 *.exe

@@ -1,7 +1,7 @@
 # pull official base image
 FROM python:3.6
 
-# set work directory
+# set working directory
 WORKDIR /server
 
 # copy project file to workdir
