@@ -1,11 +1,11 @@
-'''
+"""
 This is driver file that will contain program functions
 
-'''
+"""
 import pandas as pd
 import numpy as np
 import Connection as c
-import os,sys,time
+import os, sys, time
 from openpyxl import load_workbook
 
 
@@ -14,17 +14,6 @@ test_table = 'test'
 metadata_table = 'metadata'
 is_connect = 0
 wait_time = 0
-
-# create the postgresql cursor and connection
-
-while not is_connect:
-    try:
-        pgSqlCur, pgSqlConn = c.pgSQLconnect()
-        is_connect = 1
-    except:
-        time.sleep(1)
-        wait_time += 1
-        sys.stdout.write(f'\rConnecting to DB ... {wait_time}')
 
 
 def fmt(s):
@@ -50,9 +39,13 @@ def dump_tables():
 
 
 def get_table(table_name):
-    ''' Return a JSON-like format of table info
+    """
+    Return a JSON-like format of table data.
+    Args:
+        table_name: the table to fetch
+    Returns: an object-notated dump of the table
 
-    '''
+    """
     result = []
     column_name = []
     pgSqlCur.execute(f"select * from {table_name}")
@@ -88,17 +81,15 @@ def read_metadata(filename):
     return data
 
 
-def read_execel_file(filename):
-    # Read in the excel file into a dataframe object
-    df = pd.read_excel(filename)
-    df.head()
-
-    return df
+def load_spreadsheet(filename):
+    # Read the spreadsheet file into a dataframe object
+    return pd.read_excel(filename)
 
 
 def write_info_data(df):
-    ''' Write data from execle to the information table
-    '''
+    """
+    Write data from Excel to the information table
+    """
     cmd = "INSERT INTO {}(id, firstname, lastname, city) VALUES({}, {}, {}, {}) ON CONFLICT DO NOTHING"
     # unclear what we want to do on collision; depends on data we're inserting
 
@@ -111,21 +102,20 @@ def write_info_data(df):
 
 
 def write_metadata(metadata):
-    ''' Write metadata of excel file into metadata table
-    '''
+    """
+    Write metadata of excel file into metadata table
+    """
     cmd = "INSERT INTO {}(filename, creator, size, created_date, last_modified_date, last_modified_by, title) " \
         "VALUES({},{},{},{},{},{},{}) ON CONFLICT DO NOTHING"
     pgSqlCur.execute(cmd.format(metadata_table, metadata['filename'], metadata['creator'], metadata['size'], metadata['created'],  metadata['modified'],metadata['lastModifiedBy'], metadata['title']))
 
 
 def populate_file(filename):
-    ''' Read an execel file
-        put info data into info table
-        put metadata into metadata table
-        commit DB
-    '''
+    """
+    Read an Excel file; put info data into info table, metadata into metadata table
+    """
     # read file content
-    df = read_execel_file(filename)
+    df = load_spreadsheet(filename)
     
     # Write the data to the DB
     write_info_data(df)
@@ -149,7 +139,6 @@ def test_driver():
     print('Dump tables -------------------------------------------------')
     dump_tables()
 
-
     print('\nInsert data -------------------------------------------------')
     #populate_file(filename)
 
@@ -165,13 +154,9 @@ def test_driver():
     # unfortunately, it looks like 'creator' and 'created' are both fabricated by openpyxl, so we may need to find
     # a different way to capture that data if we want to keep them
 
-
-
-
     # Post insert query, verify data is inserted
     print('\nDump tables -------------------------------------------------')
     dump_tables()
-
 
     # close the db connection
     db_disconnect()
@@ -179,4 +164,12 @@ def test_driver():
 
 # test_driver()
 # print(get_table('test'))
-
+if __name__ == '__main__':
+    while not is_connect:
+        try:
+            pgSqlCur, pgSqlConn = c.pgSQLconnect()
+            is_connect = 1
+        except:
+            time.sleep(1)
+            wait_time += 1
+            sys.stdout.write(f'\rConnecting to DB ... {wait_time}')
