@@ -55,7 +55,7 @@ def upload_file():
 
 @app.route('/')
 def index():
-    return 'Hello World'
+    return 'Hello World\n'
 
 
 if __name__ == '__main__':

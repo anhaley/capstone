@@ -10,6 +10,14 @@ test_table = 'test'
 metadata_table = 'metadata'
 is_connect = 0
 wait_time = 0
+while not is_connect:
+    try:
+        pgSqlCur, pgSqlConn = c.pgSQLconnect()
+        is_connect = 1
+    except:
+        time.sleep(1)
+        wait_time += 1
+        sys.stdout.write(f'\rConnecting to DB ... {wait_time}')
 
 
 def fmt(s):
@@ -135,7 +143,7 @@ def test_driver():
     dump_tables()
 
     print('\nInsert data -------------------------------------------------')
-    #populate_file(filename)
+    process_file(filename)
 
     # three options for collisions:
     # 1. do nothing (discard new row; probably want to return an error to the user in this case)
@@ -157,14 +165,6 @@ def test_driver():
     db_disconnect()
 
 
-# test_driver()
-# print(get_table('test'))
 if __name__ == '__main__':
-    while not is_connect:
-        try:
-            pgSqlCur, pgSqlConn = c.pgSQLconnect()
-            is_connect = 1
-        except:
-            time.sleep(1)
-            wait_time += 1
-            sys.stdout.write(f'\rConnecting to DB ... {wait_time}')
+    test_driver()
+    print(get_table('test'))
