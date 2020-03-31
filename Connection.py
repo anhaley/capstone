@@ -6,7 +6,10 @@ from dbConfig import pgSqlConfig
 
 
 def pgSQLconnect():
-    """ Connect to the PostgreSQL database server """
+    """
+    Connect to the PostgreSQL database server.
+    Returns: the database cursor and connection object
+    """
     conn = None
     try:
         # read connection parameters
@@ -22,6 +25,13 @@ def pgSQLconnect():
 
 
 def pgSqlDisconnect(cur, conn):
+    """
+    Breaks the database connection.
+    Args:
+        cur: database cursor
+        conn: database connection object
+    Returns: None
+    """
     try:
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
