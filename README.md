@@ -17,6 +17,7 @@ If you have changed the project contents recently and wish to rebuild the Docker
 
 ### If you prefer to run the commands manually
 
+Delete existing (cached) Docker image: `sudo docker image rm flask-server:v1` \
 Build flask server image (in project folder): `sudo docker build -t flask-server:v1 .`\
 Compose and run server: `sudo docker-compose up`\
                         `sudo docker-compose up -d`       # run in background\

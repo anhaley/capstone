@@ -1,27 +1,27 @@
-"""
-This is an HTTP server, as the program API endpoint
-"""
-from flask import Flask, render_template, request, Response, jsonify
-import driver  # the driver.py file
-import os
+from flask import Flask, request, jsonify
+import driver
 
 app = Flask(__name__)
 
 
-# /list?table=???
 @app.route("/list", methods=["GET"])
-def list_tables():
+def dump_table():
+    """
+    Displays the contents of the table listed in the request.
+    Usage: /list?table=<table_name>
+    Returns ({}): JSON object of table data
+    """
     table_name = request.args.get('table', '')
     table_info_obj = driver.get_table(table_name)
-
-    response = jsonify(table_info_obj)
-
-    return response
+    return jsonify(table_info_obj)
 
 
 @app.route("/load", methods=["GET"])
 def load_data():
-    response = ''
+    """
+    Stub for a method to load data into one of the tables, e.g. via GUI
+    Returns ({}): HTTP response
+    """
 
     filename = 'files/Lists.xlsx'
     driver.process_file(filename)
@@ -36,8 +36,7 @@ def load_data():
 def upload_file():
     """
     POST <file> will trigger the Python code to ingest a spreadsheet into the database.
-    Returns:
-        The JSON representation of the server response.
+    Returns: HTTP response.
     """
     response = ''
     if request.method == 'POST':
